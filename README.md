@@ -100,8 +100,11 @@ If PhotonOS team release Hyper-V compatible VHD, the instructions below can be r
 
 ![](Finish.png) 
 
-**9. Wait 2-5 minutes. Login as 'root' User.**
+**9. Wait 2-5 minutes. Login as 'root' User, and update software.**
 
+```
+tdnf -y update
+```
 
 **10. Enable Remote Login (Use the command on both the VMs)**
 
