@@ -66,52 +66,43 @@ If PhotonOS team release Hyper-V compatible VHD, the instructions below can be r
 
 **Install**
 
-![Step-1](Install.png)
+![](Install.png)
 
 **Accept**
 
-![Step-2](Accept.png) 
+![](Accept.png) 
 
 **Auto**
 
-![Step-3](Auto.png) 
+![](Auto.png) 
 
 **Next**
 
-![Step-4](Auto-Next.png) 
+![](Auto-Next.png) 
 
 **Host Name (Same as VM Name)**
 
-![Step-5](Host-Name.png) 
+![](Host-Name.png) 
 
 **Password**
 
-![Step-6](Password.png) 
+![](Password.png) 
 
 **Confirm Password**
 
-![Step-7](Pass-Confirmation.png) 
+![](Pass-Confirmation.png) 
 
 **Yes**
 
-![Step-8](Start-Installation.png) 
+![](Start-Installation.png) 
 
-**Wait 40 seconds**
+**Wait 40 seconds. Press any key**
 
-![Step-9](In-Progress.png) 
+![](Finish.png) 
 
-**Press any key**
+**Wait 2-5 minutes. Login as 'root' User. Get the IP Address to connect using ssh Client. Next set of scripts can easily be used to reduce the typing**
 
-![Step-10](Finish.png) 
-
-**Wait 2-5 minutes**
-
-![Step-11](Wait-3to5-Minutes.png) 
-
-**Login as 'root' User**
-**Get the IP Address to connect using ssh Client. Next set of scripts can easily be used to reduce the typing**
-
-![Step-12](Get-IP.png) 
+![](Get-IP.png) 
 
 
 
