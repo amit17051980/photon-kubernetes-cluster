@@ -44,13 +44,13 @@ Set-ExecutionPolicy -ExecutionPolicy Unrestricted -Force
 # Master-1 Creation
 New-VM -Name Kube-Master-1 -MemoryStartupBytes 2GB -BootDevice VHD -NewVHDPath 'C:\Users\Public\Documents\Hyper-V\Virtual hard disks\Kube-Master-1.vhdx' -NewVHDSizeBytes 40GB -Generation 1 -Switch 'Default Switch'
 Set-VMProcessor -VMName Kube-Master-1 -Count 2
-Add-VMNetworkAdapter -VMName Kube-Master-1 -Name 'K8sInternalSwitch'
+Get-VM -Name Kube-Master-1 | Add-VMNetworkAdapter -SwitchName 'K8sInternalSwitch'
 Add-VMDvdDrive -VMName Kube-Master-1 -Path 'C:\Media-Files\photon-minimal-4.0-ca7c9e933.iso'
 
 # Node-1 Creation
 New-VM -Name Kube-Node-1 -MemoryStartupBytes 4GB -BootDevice VHD -NewVHDPath 'C:\Users\Public\Documents\Hyper-V\Virtual hard disks\Kube-Node-1.vhdx' -NewVHDSizeBytes 80GB -Generation 1 -Switch 'Default Switch'
 Set-VMProcessor -VMName Kube-Node-1 -Count 2
-Add-VMNetworkAdapter -VMName Kube-Node-1 -Name 'K8sInternalSwitch'
+Get-VM -Name Kube-Node-1 | Add-VMNetworkAdapter -SwitchName 'K8sInternalSwitch'
 Add-VMDvdDrive -VMName Kube-Node-1 -Path 'C:\Media-Files\photon-minimal-4.0-ca7c9e933.iso'
 
 # Start and Conect to VMs
