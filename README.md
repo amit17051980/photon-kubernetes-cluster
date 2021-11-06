@@ -64,23 +64,23 @@ To install PhotonOS on these VMs follow below step-by-step instructions. The ins
 If PhotonOS team release Hyper-V compatible VHD, the instructions below can be reduced.
 
 
-**Install**
+**1. Install**
 
 ![](Install.png)
 
-**Accept**
+**2. Accept**
 
 ![](Accept.png) 
 
-**Auto**
+**3. Auto**
 
 ![](Auto.png) 
 
-**Next**
+**4. Next**
 
 ![](Auto-Next.png) 
 
-**Host Name (Same as VM Name)**
+**5. Host Name (Same as VM Name)**
 
 ![](Host-Name.png) 
 
@@ -88,21 +88,61 @@ If PhotonOS team release Hyper-V compatible VHD, the instructions below can be r
 
 ![](Password.png) 
 
-**Confirm Password**
+**6. Confirm Password**
 
 ![](Pass-Confirmation.png) 
 
-**Yes**
+**7. Yes**
 
 ![](Start-Installation.png) 
 
-**Wait 40 seconds. Press any key**
+**8. Wait 40 seconds. Press any key**
 
 ![](Finish.png) 
 
-**Wait 2-5 minutes. Login as 'root' User. Get the IP Address to connect using ssh Client. Next set of scripts can easily be used to reduce the typing**
+**9. Wait 2-5 minutes. Login as 'root' User. 
 
-![](Get-IP.png) 
 
+**10. Enable Remote Login (Use the command on both the VMs)**
+
+```
+sed -i 's/PermitRootLogin no/PermitRootLogin yes/g' /etc/ssh/sshd_config
+systemctl restart sshd
+```
+
+**11. Get the IP (eth0 IPv4) addresses of both the VMs to follow next steps**
+
+```
+ip a |grep 'dynamic eth0'
+```
+
+## Assign static IP using K8sInternalSwitch Gateway IP on VMs
+
+### Kube-Master VM
+  1. Connect to Kube Master IP (found in previous step) using Powershell ssh client.
+  ```
+  ssh root@{IP OF Kube Master}
+  ```
+  2. Assign Static IP
+  ```
+  networkctl
+
+  cat > /etc/systemd/network/10-eth1-static-en.network << "EOF"
+  [Match]
+  Name=eth1
+
+  [Network]
+  Address=10.0.0.10
+
+  EOF
+
+  chmod 644 /etc/systemd/network/10-eth1-static-en.network
+
+  systemctl restart systemd-networkd
+  ```
+  3. 
+  4. 
+  5.  
+### Kube-Node VM
 
 
