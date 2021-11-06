@@ -40,6 +40,7 @@ Move the `iso` file to a known location. The path `C:\Media-Files\photon-minimal
 To create Kube-Master VM, run following command.
 
 ```
+Set-ExecutionPolicy -ExecutionPolicy Unrestricted -Force
 # Master-1 Creation
 New-VM -Name Kube-Master-1 -MemoryStartupBytes 2GB -BootDevice VHD -NewVHDPath 'C:\Users\Public\Documents\Hyper-V\Virtual hard disks\Kube-Master-1.vhdx' -NewVHDSizeBytes 40GB -Generation 1 -Switch 'Default Switch'
 Set-VMProcessor -VMName Kube-Master-1 -Count 2
