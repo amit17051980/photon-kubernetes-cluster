@@ -40,16 +40,28 @@ Move the `iso` file to a known location. The path `C:\Media-Files\photon-minimal
 To create Kube-Master VM, run following command.
 
 ```
-New-VM -Name Kube-Master -MemoryStartupBytes 2GB -BootDevice VHD -NewVHDPath 'C:\Users\Public\Documents\Hyper-V\Virtual hard disks\Kube-Master.vhdx' -NewVHDSizeBytes 40GB -Generation 1 -Switch 'Default Switch'
-Set-VMProcessor -VMName Kube-Master -Count 2
-Add-VMNetworkAdapter -VMName Kube-Master -Name 'K8sInternalSwitch'
-Add-VMDvdDrive -VMName Kube-Master -Path 'C:\Media-Files\photon-minimal-4.0-ca7c9e933.iso'
+# Master-1 Creation
+New-VM -Name Kube-Master-1 -MemoryStartupBytes 2GB -BootDevice VHD -NewVHDPath 'C:\Users\Public\Documents\Hyper-V\Virtual hard disks\Kube-Master-1.vhdx' -NewVHDSizeBytes 40GB -Generation 1 -Switch 'Default Switch'
+Set-VMProcessor -VMName Kube-Master-1 -Count 2
+Add-VMNetworkAdapter -VMName Kube-Master-1 -Name 'K8sInternalSwitch'
+Add-VMDvdDrive -VMName Kube-Master-1 -Path 'C:\Media-Files\photon-minimal-4.0-ca7c9e933.iso'
 
-Start-VM -Name Kube-Master
-vmconnect localhost Kube-Master
+# Node-1 Creation
+New-VM -Name Kube-Node-1 -MemoryStartupBytes 4GB -BootDevice VHD -NewVHDPath 'C:\Users\Public\Documents\Hyper-V\Virtual hard disks\Kube-Node-1.vhdx' -NewVHDSizeBytes 80GB -Generation 1 -Switch 'Default Switch'
+Set-VMProcessor -VMName Kube-Node-1 -Count 2
+Add-VMNetworkAdapter -VMName Kube-Node-1 -Name 'K8sInternalSwitch'
+Add-VMDvdDrive -VMName Kube-Node-1 -Path 'C:\Media-Files\photon-minimal-4.0-ca7c9e933.iso'
+
+# Start and Conect to VMs
+Start-VM -Name Kube-Master-1
+Start-VM -Name Kube-Node-1
+vmconnect localhost Kube-Master-1
+vmconnect localhost Kube-Node-1
 ```
 
 To setup VMs follow below guide. This can be done in parallel but make sure to use right name for right VM.
+
+
 
 
 
