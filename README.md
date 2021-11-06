@@ -28,7 +28,7 @@ New-VMSwitch -name K8sInternalSwitch -SwitchType Internal
 To assign an IP, run the following command.
 
 ```
-New-NetIPAddress -InterfaceAlias 'vEthernet (K8sInternalSwitch)' -IPAddress 10.0.0.1 -PrefixLength 16
+New-NetIPAddress -InterfaceAlias 'vEthernet (K8sInternalSwitch)' -IPAddress 10.0.0.1
 ```
 
 ## Create PhotonOS VMs (kube-master and kube-node)
