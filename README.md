@@ -158,7 +158,7 @@ ip a |grep 'dynamic eth0'
   Name=eth1
 
   [Network]
-  Address=10.0.0.20
+  Address=10.0.0.11
 
   EOF
 
