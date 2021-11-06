@@ -60,9 +60,9 @@ vmconnect localhost Kube-Master-1
 vmconnect localhost Kube-Node-1
 ```
 
-To setup VMs follow below guide. This can be done in parallel but make sure to use right name for right VM.
+To install PhotonOS on these VMs follow below step-by-step instructions. The instructions shown below were applied to both the VMs in parallel.
 
-![Step-1](Install.png)
+![Step-1](Install.png) ![Step-2](Accept.png) ![Step-3](Auto.png) ![Step-4](Auto-Next.png) ![Step-5](Host-Name.png) ![Step-6](Password.png) ![Step-7](Pass-Confirmation.png) ![Step-8](Start-Installation.png) ![Step-9](In-Progress.png) ![Step-10](Finish.png) ![Step-11](Wait-3to5-Minutes.png) ![Step-12](Enter-Password.png) ![Step-13](Get-IP.png) 
 
 
 
