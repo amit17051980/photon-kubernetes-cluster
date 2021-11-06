@@ -8,6 +8,7 @@ If you have Windows 10/11 Hyper-V, and want to experience Kubernetes cluster wit
 Open a PowerShell console as Administrator. Run the following command:
 
 ```
+Set-ExecutionPolicy -ExecutionPolicy Unrestricted -Force
 Enable-WindowsOptionalFeature -Online -FeatureName Microsoft-Hyper-V -All
 ```
 
@@ -36,6 +37,19 @@ https://packages.vmware.com/photon/4.0/Rev1/iso/photon-minimal-4.0-ca7c9e933.iso
 
 Move the `iso` file to a known location. The path `C:\Media-Files\photon-minimal-4.0-ca7c9e933.iso` has been assumed for the commands below.
 
+To create Kube-Master VM, run following command.
+
+```
+New-VM -Name Kube-Master -MemoryStartupBytes 2GB -BootDevice VHD -NewVHDPath 'C:\Users\Public\Documents\Hyper-V\Virtual hard disks\Kube-Master.vhdx' -NewVHDSizeBytes 40GB -Generation 1 -Switch 'Default Switch'
+Set-VMProcessor -VMName Kube-Master -Count 2
+Add-VMNetworkAdapter -VMName Kube-Master -Name 'K8sInternalSwitch'
+Add-VMDvdDrive -VMName Kube-Master -Path 'C:\Media-Files\photon-minimal-4.0-ca7c9e933.iso'
+
+Start-VM -Name Kube-Master
+vmconnect localhost Kube-Master
+```
+
+To setup VMs follow below guide. This can be done in parallel but make sure to use right name for right VM.
 
 
 
