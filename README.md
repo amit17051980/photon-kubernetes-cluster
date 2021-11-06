@@ -1,4 +1,4 @@
-# K8s Cluster on Photon OS (Hyper-V Instructions)
+# K8s Cluster on PhotonOS (Hyper-V Instructions)
 If you have Windows 10/11 Hyper-V, and want to experience Kubernetes cluster without using standalone clusters (_Minikube_,  _K3s_,  _MicroK8s_), then follow this guide. If you want to experience standalone clusters, then please refer below URLs.
 1. Minikube (https://github.com/kubernetes/minikube/)
 2. K3s (https://k3s.io/)
@@ -62,7 +62,7 @@ vmconnect localhost Kube-Node-1
 
 To setup VMs follow below guide. This can be done in parallel but make sure to use right name for right VM.
 
-
+![Step-1](Install.png)
 
 
 
