@@ -66,7 +66,7 @@ If PhotonOS team release Hyper-V compatible VHD, the instructions below can be r
 
 **Install**
 
-![Step-1](Install.png) 
+![Step-1](Install.png)
 
 **Accept**
 
