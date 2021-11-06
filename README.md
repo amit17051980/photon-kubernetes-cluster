@@ -100,7 +100,7 @@ If PhotonOS team release Hyper-V compatible VHD, the instructions below can be r
 
 ![](Finish.png) 
 
-**9. Wait 2-5 minutes. Login as 'root' User. 
+**9. Wait 2-5 minutes. Login as 'root' User.**
 
 
 **10. Enable Remote Login (Use the command on both the VMs)**
@@ -119,7 +119,7 @@ ip a |grep 'dynamic eth0'
 ## Assign static IP using K8sInternalSwitch Gateway IP on VMs
 
 ### Kube-Master VM
-  1. Connect to Kube Master IP (found in previous step) using Powershell ssh client.
+  1. Connect to Kube Master IP (found in previous step) using PowerShell ssh client.
   ```
   ssh root@{IP OF Kube Master}
   ```
@@ -140,9 +140,35 @@ ip a |grep 'dynamic eth0'
 
   systemctl restart systemd-networkd
   ```
-  3. 
-  4. 
-  5.  
+  3. Set Local Time Zone
+  ```
+  ln -sf /usr/share/zoneinfo/Europe/London /etc/localtime && echo "Europe/London" > /etc/timezone
+  ```
 ### Kube-Node VM
+  1. Connect to Kube Node IP (found in previous step) using PowerShell ssh client.
+  ```
+  ssh root@{IP OF Kube Node}
+  ```
+  2. Assign Static IP
+  ```
+  networkctl
+
+  cat > /etc/systemd/network/10-eth1-static-en.network << "EOF"
+  [Match]
+  Name=eth1
+
+  [Network]
+  Address=10.0.0.20
+
+  EOF
+
+  chmod 644 /etc/systemd/network/10-eth1-static-en.network
+
+  systemctl restart systemd-networkd
+  ```
+  3. Set Local Time Zone
+  ```
+  ln -sf /usr/share/zoneinfo/Europe/London /etc/localtime && echo "Europe/London" > /etc/timezone
+  ```
 
 
