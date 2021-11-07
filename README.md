@@ -248,6 +248,20 @@ systemctl enable --now kubelet
 ```
 sudo kubeadm init --apiserver-advertise-address=10.0.0.10  --apiserver-cert-extra-sans=10.0.0.10  --node-name kube-master-1
 ```
+
+Save the output to a secure file. It consist the cluster joining information for Kube-Node.
+E.g.,
+```
+You should now deploy a pod network to the cluster.
+Run "kubectl apply -f [podnetwork].yaml" with one of the options listed at:
+  https://kubernetes.io/docs/concepts/cluster-administration/addons/
+
+Then you can join any number of worker nodes by running the following on each as root:
+
+kubeadm join 10.0.0.10:6443 --token srs3x0.xc9xo9w5izfwwt4l \
+        --discovery-token-ca-cert-hash sha256:6a53b891dfdfe10e3997e83fc0c5f0d35fd2ac4451f4e71317e98bf997157abf
+```
+
 To start using your cluster, you need to run the following as a regular user:
   ```
   mkdir -p $HOME/.kube
@@ -258,4 +272,14 @@ Alternatively, if you are the root user, you can run:
   ```
   export KUBECONFIG=/etc/kubernetes/admin.conf
   ```
+
+## Install calico network plugin on the cluster
+```
+kubectl apply -f https://docs.projectcalico.org/manifests/calico.yaml
+```
+Wait for 1-2 minutes, and then run the command below to see everything is running.
+```
+kubectl get po -n kube-system
+```
+
 
