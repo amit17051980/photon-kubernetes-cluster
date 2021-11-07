@@ -203,7 +203,7 @@ iptables -A INPUT -i eth1 -p tcp --dport 10250 -j ACCEPT
 
 ## Configure docker daemon to use systemd as the cgroup driver
 
-### Kube-Master VM
+### Kube-Master & Kube-Node VMs
 ```
 systemctl enable docker
 systemctl start docker
@@ -224,25 +224,38 @@ systemctl daemon-reload
 systemctl start docker
 ```
 
-### Kube-Node VM
-```
-systemctl enable docker
-systemctl start docker
-systemctl stop docker
+## Install Kubeadm, Kubelet and Kubectl
 
-cat <<EOF | sudo tee /etc/docker/daemon.json
-{
-  "exec-opts": ["native.cgroupdriver=systemd"],
-  "log-driver": "json-file",
-  "log-opts": {
-    "max-size": "100m"
-  },
-  "storage-driver": "overlay2"
-}
+### Kube-Master & Kube-Node VMs
+```
+cat <<EOF | sudo tee /etc/yum.repos.d/kubernetes.repo
+[kubernetes]
+name=Kubernetes
+baseurl=https://packages.cloud.google.com/yum/repos/kubernetes-el7-\$basearch
+enabled=1
+gpgcheck=1
+repo_gpgcheck=1
+gpgkey=https://packages.cloud.google.com/yum/doc/yum-key.gpg https://packages.cloud.google.com/yum/doc/rpm-package-key.gpg
+exclude=kubelet kubeadm kubectl
 EOF
 
-systemctl daemon-reload
-systemctl start docker
+tdnf install -y kubelet kubeadm kubectl
+
+systemctl enable --now kubelet
 ```
 
+## Configure Kubernetes Cluster in Kube-Master
+```
+sudo kubeadm init --apiserver-advertise-address=10.0.0.10  --apiserver-cert-extra-sans=10.0.0.10  --node-name kube-master-1
+```
+To start using your cluster, you need to run the following as a regular user:
+  ```
+  mkdir -p $HOME/.kube
+  sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+  sudo chown $(id -u):$(id -g) $HOME/.kube/config
+  ```
+Alternatively, if you are the root user, you can run:
+  ```
+  export KUBECONFIG=/etc/kubernetes/admin.conf
+  ```
 
