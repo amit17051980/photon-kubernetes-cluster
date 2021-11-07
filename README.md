@@ -106,14 +106,14 @@ If PhotonOS team release Hyper-V compatible VHD, the instructions below can be r
 tdnf -y update
 ```
 
-**10. Enable Remote Login (Use the command on both the VMs)**
+**10. Enable Remote Login**
 
 ```
 sed -i 's/PermitRootLogin no/PermitRootLogin yes/g' /etc/ssh/sshd_config
 systemctl restart sshd
 ```
 
-**11. Get the IP (eth0 IPv4) addresses of both the VMs to follow next steps**
+**11. Get the IP (eth0 IPv4) address to follow next steps**
 
 ```
 ip a |grep 'dynamic eth0'
@@ -147,6 +147,10 @@ ip a |grep 'dynamic eth0'
   ```
   ln -sf /usr/share/zoneinfo/Europe/London /etc/localtime && echo "Europe/London" > /etc/timezone
   ```
+  4. Add Kube-Node IP into hosts file
+  ```
+  echo "10.0.0.11    kube-node-1" >> /etc/hosts
+  ```
 ### Kube-Node VM
   1. Connect to Kube Node IP (found in previous step) using PowerShell ssh client.
   ```
@@ -173,5 +177,30 @@ ip a |grep 'dynamic eth0'
   ```
   ln -sf /usr/share/zoneinfo/Europe/London /etc/localtime && echo "Europe/London" > /etc/timezone
   ```
+  4. Add Kube-Master IP into hosts file
+  ```
+  echo "10.0.0.10    kube-master-1" >> /etc/hosts
+  ```
+
+## Add firewall rules for some important ports
+
+### Kube-Master VM
+```
+iptables -A INPUT -i eth1 -p tcp --dport 6443 -j ACCEPT
+iptables -A INPUT -i eth1 -p tcp --dport 2379:2380 -j ACCEPT
+iptables -A INPUT -i eth1 -p tcp --dport 10248 -j ACCEPT
+iptables -A INPUT -i eth1 -p tcp --dport 10250 -j ACCEPT
+iptables -A INPUT -i eth1 -p tcp --dport 10259 -j ACCEPT
+iptables -A INPUT -i eth1 -p tcp --dport 10257 -j ACCEPT
+```
+
+### Kube-Node VM
+```
+iptables -A INPUT -i eth1 -p tcp --dport 30000:32767 -j ACCEPT
+iptables -A INPUT -i eth1 -p tcp --dport 10248 -j ACCEPT
+iptables -A INPUT -i eth1 -p tcp --dport 10250 -j ACCEPT
+```
+
+
 
 
