@@ -201,6 +201,48 @@ iptables -A INPUT -i eth1 -p tcp --dport 10248 -j ACCEPT
 iptables -A INPUT -i eth1 -p tcp --dport 10250 -j ACCEPT
 ```
 
+## Configure docker daemon to use systemd as the cgroup driver
 
+### Kube-Master VM
+```
+systemctl enable docker
+systemctl start docker
+systemctl stop docker
+
+cat <<EOF | sudo tee /etc/docker/daemon.json
+{
+  "exec-opts": ["native.cgroupdriver=systemd"],
+  "log-driver": "json-file",
+  "log-opts": {
+    "max-size": "100m"
+  },
+  "storage-driver": "overlay2"
+}
+EOF
+
+systemctl daemon-reload
+systemctl start docker
+```
+
+### Kube-Node VM
+```
+systemctl enable docker
+systemctl start docker
+systemctl stop docker
+
+cat <<EOF | sudo tee /etc/docker/daemon.json
+{
+  "exec-opts": ["native.cgroupdriver=systemd"],
+  "log-driver": "json-file",
+  "log-opts": {
+    "max-size": "100m"
+  },
+  "storage-driver": "overlay2"
+}
+EOF
+
+systemctl daemon-reload
+systemctl start docker
+```
 
 
