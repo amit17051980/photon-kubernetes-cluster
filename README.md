@@ -201,6 +201,19 @@ iptables -A INPUT -i eth1 -p tcp --dport 10248 -j ACCEPT
 iptables -A INPUT -i eth1 -p tcp --dport 10250 -j ACCEPT
 ```
 
+## Kernel Configuration
+
+### Kube-Master & Kube-Node VMs
+```
+cat <<EOF | sudo tee /etc/sysctl.d/kubernetes.conf
+net.ipv4.ip_forward = 1
+net.bridge.bridge-nf-call-ip6tables = 1
+net.bridge.bridge-nf-call-iptables = 1
+EOF
+
+sysctl --system
+```
+
 ## Configure docker daemon to use systemd as the cgroup driver
 
 ### Kube-Master & Kube-Node VMs
@@ -262,6 +275,11 @@ kubeadm join 10.0.0.10:6443 --token srs3x0.xc9xo9w5izfwwt4l \
         --discovery-token-ca-cert-hash sha256:6a53b891dfdfe10e3997e83fc0c5f0d35fd2ac4451f4e71317e98bf997157abf
 ```
 
+If you missed to record the commands as shown above, execute the following command in the master node to recreate the token with the join command.
+```
+kubeadm token create --print-join-command
+```
+
 To start using your cluster, you need to run the following as a regular user:
   ```
   mkdir -p $HOME/.kube
@@ -282,4 +300,111 @@ Wait for 1-2 minutes, and then run the command below to see everything is runnin
 kubectl get po -n kube-system
 ```
 
+## Join Kube-Node to the Cluster
+Run the command (noted from the output during Cluster Creation) in Kube-Node to join Node into the cluster.
 
+```
+kubeadm join 10.0.0.10:6443 --token srs3x0.xc9xo9w5izfwwt4l \
+        --discovery-token-ca-cert-hash sha256:6a53b891dfdfe10e3997e83fc0c5f0d35fd2ac4451f4e71317e98bf997157abf
+```
+
+To verify the successful operation, run `kubectl get nodes` on the Kube-Master node.
+
+E.g (Output).,
+```
+root@kube-master-1 [ ~ ]# kubectl get nodes
+NAME            STATUS   ROLES                  AGE     VERSION
+kube-master-1   Ready    control-plane,master   68m     v1.22.3
+kube-node-1     Ready    <none>                 2m12s   v1.22.3
+```
+
+## Deploy A Sample Nginx Application
+```
+cat <<EOF | kubectl apply -f -
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-deployment
+spec:
+  selector:
+    matchLabels:
+      app: nginx
+  replicas: 2 
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      containers:
+      - name: nginx
+        image: nginx:latest
+        ports:
+        - containerPort: 80      
+EOF
+```
+
+```
+cat <<EOF | kubectl apply -f -
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx-service
+spec:
+  selector: 
+    app: nginx
+  type: NodePort  
+  ports:
+    - port: 80
+      targetPort: 80
+      nodePort: 32000
+EOF
+```
+Once the deployment is up, you should be able to access Nginx home page on the allocated NodePort.
+
+## Install Kubernetes Dashboard (Optional)
+```
+kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/v2.4.0/aio/deploy/recommended.yaml
+
+cat <<EOF | kubectl apply -f -
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: admin-user
+  namespace: kubernetes-dashboard
+EOF
+
+cat <<EOF | kubectl apply -f -
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: admin-user
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: cluster-admin
+subjects:
+- kind: ServiceAccount
+  name: admin-user
+  namespace: kubernetes-dashboard
+EOF
+```
+
+Get the token of the user (created above)
+```
+kubectl -n kubernetes-dashboard get secret $(kubectl -n kubernetes-dashboard get sa/admin-user -o jsonpath="{.secrets[0].name}") -o go-template="{{.data.token | base64decode}}"
+```
+
+To access Kubernetes Dashboard from remote machine using above token, follow the instructions below.
+
+https://www.thegeekdiary.com/how-to-access-kubernetes-dashboard-externally/
+
+
+## Next Steps
+Review the References to achieve more.
+
+## References
+https://devopscube.com/setup-kubernetes-cluster-kubeadm/
+https://pirivan.gitlab.io/post/installing-kubernetes-on-the-photon-os/
+https://docs.armory.io/docs/armory-admin/manual-service-account/
+https://docs.bitnami.com/tutorials/configure-rbac-in-your-kubernetes-cluster/
+https://kubernetes.io/docs/tasks/access-application-cluster/web-ui-dashboard/
