@@ -301,7 +301,7 @@ kubectl get po -n kube-system
 ```
 
 ## Join Kube-Node to the Cluster
-Run the command (noted from the output during Cluster Creation) in Kube-Node to join Node into the cluster.
+Run the command (_noted from the output during Cluster Creation_) in Kube-Node to join Node into the cluster. E.g.,
 
 ```
 kubeadm join 10.0.0.10:6443 --token srs3x0.xc9xo9w5izfwwt4l \
