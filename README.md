@@ -37,7 +37,7 @@ https://packages.vmware.com/photon/4.0/Rev1/iso/photon-minimal-4.0-ca7c9e933.iso
 
 Move the `iso` file to a known location. The path `C:\Media-Files\photon-minimal-4.0-ca7c9e933.iso` has been assumed for the commands below.
 
-To create Kube-Master VM, run following command.
+To create Kube-Master and Kube-Node VMs, run following command.
 
 ```
 Set-ExecutionPolicy -ExecutionPolicy Unrestricted -Force
