@@ -351,6 +351,21 @@ EOF
 ```
 Once the deployment is up, you should be able to access Nginx home page on the allocated NodePort.
 
+e.g.,
+If you have assigned an external switch to the Node VM so that you can access from another computer in your home network
+Get the IP like below.
+```
+ip a|grep 192.168.0
+---
+inet 192.168.0.37/24 brd 192.168.0.255 scope global dynamic eth2
+---
+```
+Access the service like url : http://192.168.0.37:3200
+
+If you are on the Windows PC where Hyper-V is running.
+Access the service like url : http://10.0.0.11:3200
+
+
 ## Install Kubernetes Dashboard (Optional)
 ```
 kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/v2.4.0/aio/deploy/recommended.yaml
