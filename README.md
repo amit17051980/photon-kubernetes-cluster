@@ -352,7 +352,7 @@ EOF
 Once the deployment is up, you should be able to access Nginx home page on the allocated NodePort.
 
 e.g.,
-If you have assigned an external switch to the Node VM so that you can access from another computer in your home network
+If you have assigned an external switch to the Node VM so that you can access from another computer in your home network.
 Get the IP like below.
 ```
 ip a|grep 192.168.0
