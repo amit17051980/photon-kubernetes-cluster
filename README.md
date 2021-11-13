@@ -68,35 +68,25 @@ If PhotonOS team release Hyper-V compatible VHD, the instructions below can be r
 
 ![](Install.png)
 
-**2. Accept**
+**2. Accept the Agreement**
 
-![](Accept.png) 
 
-**3. Auto**
+**3. Select Auto configuration**
 
-![](Auto.png) 
 
-**4. Next**
+**4. Click Next**
 
-![](Auto-Next.png) 
 
-**5. Host Name (Same as VM Name)**
+**5. Enter Host Name in lower case (Same as VM Name)**
 
-![](Host-Name.png) 
 
-**Password**
+**6. Enter Password and Confirm Password**
 
-![](Password.png) 
 
-**6. Confirm Password**
+**7. Select Yes to start the Installation**
 
-![](Pass-Confirmation.png) 
 
-**7. Yes**
-
-![](Start-Installation.png) 
-
-**8. Wait 40 seconds. Press any key**
+**8. Wait for 40 seconds, and press any key**
 
 ![](Finish.png) 
 
