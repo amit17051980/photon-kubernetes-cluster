@@ -400,7 +400,83 @@ https://www.thegeekdiary.com/how-to-access-kubernetes-dashboard-externally/
 
 
 ## Next Steps
-Review the References to achieve more.
+1. Follow the Apendix to create Kubernetes Client if you prefer using another VM as a Kube Client to interact with Cluster
+2. Review the References to achieve more.
+
+## Appendix (Kubernetes Client VM)
+
+1. Create a VM
+```
+# Client-1 Creation
+New-VM -Name Kube-Client-1 -MemoryStartupBytes 4GB -BootDevice VHD -NewVHDPath 'C:\Users\Public\Documents\Hyper-V\Virtual hard disks\Kube-Client-1.vhdx' -NewVHDSizeBytes 80GB -Generation 1 -Switch 'Default Switch'
+Set-VMProcessor -VMName Kube-Client-1 -Count 2
+Get-VM -Name Kube-Client-1 | Add-VMNetworkAdapter -SwitchName 'K8sInternalSwitch'
+Add-VMDvdDrive -VMName Kube-Client-1 -Path 'C:\Media-Files\photon-minimal-4.0-ca7c9e933.iso'
+
+# Start and Conect to VMs
+Start-VM -Name Kube-Client-1
+vmconnect localhost Kube-Client-1
+```
+2. Enable Remote Login
+```
+sed -i 's/PermitRootLogin no/PermitRootLogin yes/g' /etc/ssh/sshd_config
+systemctl restart sshd
+```
+3. Get the IP (eth0 IPv4) address to follow next steps
+```
+ip a |grep 'dynamic eth0'
+```
+4. Assign static IP using K8sInternalSwitch Gateway IP on VMs
+```
+networkctl
+
+cat > /etc/systemd/network/10-eth1-static-en.network << "EOF"
+[Match]
+Name=eth1
+
+[Network]
+Address=10.0.0.12
+
+EOF
+
+chmod 644 /etc/systemd/network/10-eth1-static-en.network
+
+systemctl restart systemd-networkd
+```
+5. Set Local Time Zone
+```
+ln -sf /usr/share/zoneinfo/Europe/London /etc/localtime && echo "Europe/London" > /etc/timezone
+```
+6. Add Kube-Master IP into hosts file
+```
+echo "10.0.0.10    kube-master-1" >> /etc/hosts
+```
+7. Install Kubectl
+```
+cat <<EOF | sudo tee /etc/yum.repos.d/kubernetes.repo
+[kubernetes]
+name=Kubernetes
+baseurl=https://packages.cloud.google.com/yum/repos/kubernetes-el7-x86_64
+enabled=1
+gpgcheck=1
+repo_gpgcheck=1
+gpgkey=https://packages.cloud.google.com/yum/doc/yum-key.gpg https://packages.cloud.google.com/yum/doc/rpm-package-key.gpg
+EOF
+sudo yum install -y kubectl
+```
+8. Enable kubectl autocompletion
+```
+echo 'source <(kubectl completion bash)' >>~/.bashrc
+```
+9. Next step is to get kube configuration for this server in order to interact with cluster. There are 2 options.
+ a. Create an user for right privileges to the cluster and share the kube config of the user
+ b. Copy `~/.kube/config` file from Control Plane (Kube Master) to the same location in Kube Client
+
+9. Verify the connectivity to cluster
+```
+kubectl cluster-info
+```
+
 
 ## References
 https://devopscube.com/setup-kubernetes-cluster-kubeadm/
