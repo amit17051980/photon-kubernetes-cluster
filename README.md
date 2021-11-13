@@ -502,4 +502,5 @@ kubectl cluster-info
 7. https://metallb.universe.tf/installation/
 8. https://helm.sh/
 9. https://www.thegeekdiary.com/how-to-access-kubernetes-dashboard-externally/
+10. https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/
 
