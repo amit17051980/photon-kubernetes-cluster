@@ -484,9 +484,12 @@ kubectl cluster-info
 
 
 ## References
-https://devopscube.com/setup-kubernetes-cluster-kubeadm/
-https://pirivan.gitlab.io/post/installing-kubernetes-on-the-photon-os/
-https://docs.armory.io/docs/armory-admin/manual-service-account/
-https://docs.bitnami.com/tutorials/configure-rbac-in-your-kubernetes-cluster/
-https://kubernetes.io/docs/tasks/access-application-cluster/web-ui-dashboard/
-https://cloud.google.com/kubernetes-engine/docs/how-to/exposing-apps#kubectl-apply
+1. https://devopscube.com/setup-kubernetes-cluster-kubeadm/
+2. https://pirivan.gitlab.io/post/installing-kubernetes-on-the-photon-os/
+3. https://docs.armory.io/docs/armory-admin/manual-service-account/
+4. https://docs.bitnami.com/tutorials/configure-rbac-in-your-kubernetes-cluster/
+5. https://kubernetes.io/docs/tasks/access-application-cluster/web-ui-dashboard/
+6. https://cloud.google.com/kubernetes-engine/docs/how-to/exposing-apps#kubectl-apply
+7. https://metallb.universe.tf/installation/
+8. https://helm.sh/
+
