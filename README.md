@@ -484,3 +484,4 @@ https://pirivan.gitlab.io/post/installing-kubernetes-on-the-photon-os/
 https://docs.armory.io/docs/armory-admin/manual-service-account/
 https://docs.bitnami.com/tutorials/configure-rbac-in-your-kubernetes-cluster/
 https://kubernetes.io/docs/tasks/access-application-cluster/web-ui-dashboard/
+https://cloud.google.com/kubernetes-engine/docs/how-to/exposing-apps#kubectl-apply
