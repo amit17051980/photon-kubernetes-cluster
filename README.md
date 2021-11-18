@@ -527,4 +527,5 @@ kubectl create secret generic regcred \
 8. https://helm.sh/
 9. https://www.thegeekdiary.com/how-to-access-kubernetes-dashboard-externally/
 10. https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/
+11. https://helm.sh/docs/topics/rbac/
 
