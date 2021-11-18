@@ -415,7 +415,8 @@ Use the url like : https://10.0.0.11:[NodePort]/
 
 ## Next Steps
 1. Follow the Apendix to create Kubernetes Client if you prefer using another VM as a Kube Client to interact with Cluster
-2. Review the References to achieve more.
+2. Follow the Apendix to create Private Docker Registry Secret to be used by Cluster
+3. Review the References to achieve more.
 
 ## Appendix (Kubernetes Client VM)
 
@@ -482,14 +483,43 @@ sudo yum install -y kubectl
 ```
 echo 'source <(kubectl completion bash)' >>~/.bashrc
 ```
-9. Next step is to get kube configuration for this server in order to interact with cluster. There are 2 options.
- a. Create an user for right privileges to the cluster and share the kube config of the user
- b. Copy `~/.kube/config` file from Control Plane (Kube Master) to the same location in Kube Client
+9. Next step is to get kube configuration ready on this server so that interaction to the cluster can be establised. There are 2 options.
+    >> 1. Create an user with right cluster and namespace privileges and use the kube config of the user in `~/.kube/config`.
+    >> 2. Copy `~/.kube/config` file from Control Plane (Kube Master) to the same location in Kube Client.
 
-9. Verify the connectivity to cluster
+10. Verify the connectivity to cluster
 ```
 kubectl cluster-info
 ```
+
+## Appendix (Configure Cluster to use Private Docker Registry)
+The steps below are solely for demonstration purpose, but can be used for other private registry. There are ways to load external registry images to enterprise specific private registry and use from there. This is the case when Client PCs and Cluster are blocked to talk to external registry.
+
+1. Perform Docker Login on Node/Master/Client where docker is installed and can talk to Kubernetes Cluster
+
+```
+docker login registry.opentext.com
+```
+
+Provide User and PAssword. You should see success message like below.
+```
+Username: ********
+Password: ********
+WARNING! Your password will be stored unencrypted in /root/.docker/config.json.
+Configure a credential helper to remove this warning. See
+https://docs.docker.com/engine/reference/commandline/login/#credentials-store
+
+Login Succeeded
+```
+
+2. Create Secret from the config.json (created above).
+```
+kubectl create secret generic regcred \
+    --from-file=.dockerconfigjson=/root/.docker/config.json \
+    --type=kubernetes.io/dockerconfigjson
+```
+
+3. Delete /root/.docker/config.json
 
 
 ## References
