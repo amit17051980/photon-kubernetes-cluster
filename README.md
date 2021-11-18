@@ -402,16 +402,10 @@ kubectl -n kubernetes-dashboard get secret $(kubectl -n kubernetes-dashboard get
 To access Kubernetes Dashboard from remote machine using above token, follow the instructions below.
 
 ```
-kubectl patch svc kubernetes-dashboard -n kubernetes-dashboard -p '{"spec": {"type": "LoadBalancer", "externalIPs":["10.0.0.11"]}}'
+kubectl patch svc kubernetes-dashboard -n kubernetes-dashboard -p '{"spec": {"type": "LoadBalancer", "externalIPs":["10.0.0.10"]}}'
 ```
 
-Get the Port to connect to.
-
-```
-kubectl describe svc --namespace kubernetes-dashboard kubernetes-dashboard|grep NodePort
-```
-
-Use the url like : https://10.0.0.11:[NodePort]/
+Use the url like : https://10.0.0.10/
 
 ## Next Steps
 1. Follow the Apendix to create Kubernetes Client if you prefer using another VM as a Kube Client to interact with Cluster
