@@ -478,7 +478,67 @@ sudo yum install -y kubectl
 echo 'source <(kubectl completion bash)' >>~/.bashrc
 ```
 9. Next step is to get kube configuration ready on this server so that interaction to the cluster can be establised. There are 2 options.
-    >> 1. Create an user with right cluster and namespace privileges and use the kube config of the user in `~/.kube/config`.
+    >> 1. Create an user with right cluster and namespace privileges and use the kube config of the user in `~/.kube/config`. E.g.,
+    <pre>
+    # Namespace Creation
+    ---
+    apiVersion: v1
+    kind: Namespace
+    metadata:
+      name: documentum
+    
+    # ServiceAccount Creation
+    ---
+    apiVersion: v1
+    kind: ServiceAccount
+    metadata:
+      name: dmadmin
+      namespace: documentum
+      
+    # Role Creation
+    ---
+    apiVersion: rbac.authorization.k8s.io/v1
+    kind: Role
+    metadata:
+      name: documentum-role
+      namespace: documentum
+    rules:
+    - apiGroups: ["*"]
+      resources: ["*"]
+      verbs: ["*"]
+    
+    # RoleBinding Creation
+    ---
+    apiVersion: rbac.authorization.k8s.io/v1
+    kind: RoleBinding
+    metadata:
+      name: documentum-rolebinding
+      namespace: documentum
+    roleRef:
+      apiGroup: rbac.authorization.k8s.io
+      kind: Role
+      name: documentum-role
+    subjects:
+    - namespace: documentum
+      kind: ServiceAccount
+      name: documentum
+    
+    # ClusterRoleBinding Creation
+    ---
+    apiVersion: rbac.authorization.k8s.io/v1
+    kind: ClusterRoleBinding
+    metadata:
+      name: documentum-clusterrolebinding
+    roleRef:
+      apiGroup: rbac.authorization.k8s.io
+      kind: ClusterRole
+      name: cluster-admin
+    subjects:
+    - kind: ServiceAccount
+      name: dmadmin
+      namespace: documentum
+    </pre>
+    
     >> 2. Copy `~/.kube/config` file from Control Plane (Kube Master) to the same location in Kube Client.
 
 10. Verify the connectivity to cluster
